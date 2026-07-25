@@ -1,0 +1,16 @@
+.countdown {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+body {
+    background-color: black;
+}
+
+#main-clock {
+    color: white;
+}
