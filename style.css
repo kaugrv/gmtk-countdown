@@ -11,9 +11,10 @@
 :root {
     --text-color: #0099FF;
     --text-medium: 30px;
-
     --text-large: 50px;
     --text-larger: 70px;
+
+    --text-countdowns: 20pt;
 
 }
 
@@ -23,7 +24,7 @@
     top: 0px;
 
     cursor: pointer;
-    font-size: 20px;
+    font-size: var(--text-countdowns);
     font-family: 'Alien';
 
     color: var(--text-color);
@@ -70,8 +71,8 @@ body {
 }
 
 .main-screen {
-    width: 900px;
-    height: 675px;
+    width: 70vw;
+    height: 80vh;
     background-image: url('/assets/screen-background.jpg');
     background-position: center;
     position: relative;
@@ -112,6 +113,7 @@ body {
 
 .main-screen-intro {
     background-image: none;
+        cursor: pointer;
 }
 
 .intro {
@@ -121,3 +123,4 @@ body {
     font-size: var(--text-medium);
     text-shadow: var(--text-color) 0px 0px 39px; 
 }
+

@@ -1,33 +1,32 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" href="style.css"/>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
         <title>gmtk</title>
     </head>
     <body>
         <div class="scanline"></div>
 
-        <div class="main-screen main-screen-intro ">
+        <div class="main-screen main-screen-intro" id="crt-screen">
+            <span class="date">12/31/1999</span>
+            <div class="intro">
+                <span id="intro-1">>Quick, quick, Janitor!</span><br />
+                <span id="intro-1">>it’s almost midnight.</span><br />
+                <span id="intro-1">>all the numbers shall descend to zero,</span
+                ><br />
+                <span id="intro-1">>before we may enter the 21th century.</span
+                ><br />
+                <span id="intro-1">>who knows what is awaiting?</span><br />
+                <span id="intro-1">>good luck.</span><br />
+                <span id="intro-1">><span class="bar">i</span></span
+                ><br />
+            </div>
 
-
-                <span class="date">12/31/1999</span>
-                  <div class="intro">
-                    <span id="intro-1">>Quick, quick, Janitor!</span><br>
-                    <span id="intro-1">>it’s almost midnight.</span><br>
-                    <span id="intro-1">>all the numbers shall descend to zero,</span><br>
-                    <span id="intro-1">>before we may enter the 21th century.</span><br>
-                    <span id="intro-1">>who knows what is awaiting?</span><br>
-                    <span id="intro-1">>good luck.</span><br>
-                    <span id="intro-1">><span class="bar">i</span></span><br>
-                </div>
-
-                <span class="global-hour main-game" id="global-hour">23:55:50</span>
-
+            <span class="global-hour main-game" id="global-hour">23:55:50</span>
         </div>
         <div id="main-countdowns" class="main-game"></div>
-
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         <script src="assets/SplitText.min.js"></script>
