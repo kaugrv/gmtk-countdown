@@ -356,11 +356,3 @@ function launchGame() {
         .timeline({ repeat: -1, repeatDelay: 0.11 })
         .to(".bar", { duration: 0.32, autoAlpha: 0 });
 }
-
-function launchGame() {
-    mainGame.forEach((el) => {
-        el.style.display = "block";
-    });
-    intro.style.display = "none";
-    init();
-}
