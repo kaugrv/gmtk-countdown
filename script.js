@@ -225,3 +225,39 @@ function step(timestamp) {
 }
 
 init();
+
+
+
+
+// SplitText (Intro)
+
+gsap.registerPlugin(SplitText)
+
+const split = new SplitText('#intro-1', { type: 'chars' })
+
+const typing_text = gsap.timeline()
+  .from(split.chars, {
+  duration: .02,
+  autoAlpha: 0,
+  stagger: {
+    each: .08,
+    onStart() {
+      let target = this.targets()[0];
+      console.log(target.offsetLeft + target.offsetWidth)
+      let cursorPos = target.offsetLeft + target.offsetWidth;
+      gsap.set('.bar', {x: cursorPos + 3})
+    }
+  }
+});
+
+const blink = gsap.timeline({ repeat: -1, repeatDelay: .11 })
+  .to('.bar', { duration: .32, autoAlpha: 0 })
+
+
+let intro = document.querySelector('.intro');
+
+document.body.addEventListener("keydown", (e) => {
+  if ((e.key === "Enter" || e.key === "Escape")) {
+    intro.style.display = "none";
+  }
+});
