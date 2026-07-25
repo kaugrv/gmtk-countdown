@@ -1,3 +1,4 @@
+const COUNTER_MAX_SPEED = [50, 0.1];
 class Counter {
     constructor(pos, area, html_el) {
         this.pos = pos;
@@ -257,7 +258,8 @@ const blink = gsap.timeline({ repeat: -1, repeatDelay: .11 })
 let intro = document.querySelector('.intro');
 
 document.body.addEventListener("keydown", (e) => {
-  if ((e.key === "Enter" || e.key === "Escape")) {
-    intro.style.display = "none";
-  }
+    if (e.key === "Enter" || e.key === "Escape") {
+        intro.style.display = "none";
+        init();
+    }
 });
