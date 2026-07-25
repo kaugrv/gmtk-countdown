@@ -1,3 +1,18 @@
+
+/* Default */
+gsap.defaults({
+    ease: "power4.out",
+    duration: 1,
+});
+
+// gsap.from(".classe", {
+//     opacity: 0,
+//     duration: 5,
+//     delay: 1
+// });
+
+
+
 const globalCountdown = 600 * 5;
 
 let mainGame = document.querySelector(".main-game");
