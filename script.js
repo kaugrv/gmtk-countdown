@@ -262,29 +262,6 @@ gsap.registerPlugin(SplitText)
 
 const split = new SplitText('#intro-1', { type: 'chars' })
 
-const typing_text = gsap.timeline()
-  .from(split.chars, {
-  duration: .02,
-  autoAlpha: 0,
-  stagger: {
-    each: .08,
-    onStart() {
-      let target = this.targets()[0];
-      console.log(target.offsetLeft + target.offsetWidth)
-      let cursorPos = target.offsetLeft + target.offsetWidth;
-      gsap.set('.bar', {x: cursorPos + 3})
-    }
-  }
-});
-
-const blink = gsap.timeline({ repeat: -1, repeatDelay: .11 })
-  .to('.bar', { duration: .32, autoAlpha: 0 })
-// SplitText (Intro)
-
-gsap.registerPlugin(SplitText)
-
-const split = new SplitText('#intro-1', { type: 'chars' })
-
 let intro = document.querySelector('.intro');
 let mainGame = document.querySelectorAll('.main-game')
 
