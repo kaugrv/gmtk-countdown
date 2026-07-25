@@ -1,3 +1,7 @@
+function clamp(x, a, b) {
+    return Math.min(Math.max(x, a), b);
+}
+
 const COUNTER_MAX_SPEED = [50, 0.1];
 class Counter {
     constructor(pos, area, html_el) {
@@ -83,8 +87,9 @@ class Counter {
     set_pos(target) {
         if (this.stopped) return;
 
-        this.pos[0] = target[0];
-        this.pos[1] = target[1];
+        const area = get_game_area();
+        this.pos[0] = clamp(target[0], area.left, area.right);
+        this.pos[1] = clamp(target[1], area.top, area.bottom);
         this.offset_polar = [0, 0];
         this.offset_speeds = [0, 0];
 
@@ -145,6 +150,26 @@ class Counter {
     }
 }
 
+function get_game_area() {
+    const screen_rect = document
+        .getElementsByClassName("main-screen")[0]
+        .getBoundingClientRect();
+    const date_rect = document
+        .getElementsByClassName("date")[0]
+        .getBoundingClientRect();
+    const time_rect = document
+        .getElementById("global-hour")
+        .getBoundingClientRect();
+    return {
+        left: screen_rect.left,
+        right: screen_rect.right,
+        top: date_rect.bottom + 10,
+        bottom: time_rect.top - 10,
+        width: screen_rect.width,
+        height: time_rect.top - date_rect.bottom,
+    };
+}
+
 let countdowns = [];
 function init() {
     var time_format = new Intl.NumberFormat("en-US", {
@@ -176,6 +201,7 @@ function init() {
     }, 1000);
 
     let countdowns_el = document.getElementById("main-countdowns");
+    const area = get_game_area();
     for (let i = 0; i < 4 * 4; ++i) {
         let node = document.createElement("div");
         node.className = "countdown";
@@ -187,8 +213,8 @@ function init() {
         node.appendChild(time);
         countdowns_el.appendChild(node);
 
-        const x = window.innerWidth / 2 - 256 + 128 * (i % 4);
-        const y = window.innerHeight / 2 - 256 + 128 * Math.floor(i / 4);
+        const x = area.left + (area.width / 4) * (i % 4);
+        const y = area.top + 25 + (area.height / 4) * Math.floor(i / 4);
         countdowns.push(new Counter([x, y], 128, node));
     }
     requestAnimationFrame(step);
@@ -257,65 +283,65 @@ function step(timestamp) {
     requestAnimationFrame(step);
 }
 
+gsap.registerPlugin(SplitText);
 
-gsap.registerPlugin(SplitText)
+const split = new SplitText("#intro-1", { type: "chars" });
 
-const split = new SplitText('#intro-1', { type: 'chars' })
-
-let intro = document.querySelector('.intro');
-let mainGame = document.querySelectorAll('.main-game')
+let intro = document.querySelector(".intro");
+let mainGame = document.querySelectorAll(".main-game");
 
 // -1 = accueil
 // 0 = intro
 // 1 = boucle principale
-// 2 = game over 
+// 2 = game over
 // 3 = win
 // 4 = écran de fin
 
 let gameState = -1;
 
 document.body.addEventListener("keyup", (e) => {
-  if ((e.key === "Enter" || e.key === "Escape" || e.key === "Space" || e.keyCode == 32)) {
-    console.log(gameState)
-    if (gameState == -1) {
-      launchIntro(); 
-      gameState++; 
-      return
+    if (
+        e.key === "Enter" ||
+        e.key === "Escape" ||
+        e.key === "Space" ||
+        e.keyCode == 32
+    ) {
+        console.log(gameState);
+        if (gameState == -1) {
+            launchIntro();
+            gameState++;
+            return;
+        }
+        if (gameState == 0) {
+            launchGame();
+            gameState++;
+            return;
+        } else {
+            return;
+        }
     }
-    if (gameState == 0) {
-      launchGame(); 
-      gameState++; 
-      return
-    }
-    else {
-      return
-    }};
 });
 
-
 function launchIntro() {
- 
-  intro.style.display = "block";
+    intro.style.display = "block";
 
-  const typing_text = gsap.timeline()
-    .from(split.chars, {
-    duration: .02,
-    autoAlpha: 0,
-    stagger: {
-      each: .08,
-    }
-  });
+    const typing_text = gsap.timeline().from(split.chars, {
+        duration: 0.02,
+        autoAlpha: 0,
+        stagger: {
+            each: 0.08,
+        },
+    });
 
-  const blink = gsap.timeline({ repeat: -1, repeatDelay: .11 })
-    .to('.bar', { duration: .32, autoAlpha: 0 })
-
-  }
-
-function launchGame() {
-
-  mainGame.forEach((el)=> {el.style.display = "block"});
-  intro.style.display = "none";
-  init();
-
+    const blink = gsap
+        .timeline({ repeat: -1, repeatDelay: 0.11 })
+        .to(".bar", { duration: 0.32, autoAlpha: 0 });
 }
 
+function launchGame() {
+    mainGame.forEach((el) => {
+        el.style.display = "block";
+    });
+    intro.style.display = "none";
+    init();
+}
