@@ -48,9 +48,6 @@ body {
 
 }
 
-
-
-
 .date {
     margin-top: 10px;
 
@@ -109,7 +106,7 @@ body {
     100% {filter: brightness(1);}
 }
 
-#main-countdowns, .global-hour {
+.main-game {
     display: none;
 }
 
@@ -118,6 +115,7 @@ body {
 }
 
 .intro {
+    display: none;
     color: var(--text-color);
     font-family: 'Alien';
     font-size: var(--text-medium);

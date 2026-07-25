@@ -224,7 +224,6 @@ function step(timestamp) {
     requestAnimationFrame(step);
 }
 
-init();
 
 
 
@@ -235,29 +234,60 @@ gsap.registerPlugin(SplitText)
 
 const split = new SplitText('#intro-1', { type: 'chars' })
 
-const typing_text = gsap.timeline()
-  .from(split.chars, {
-  duration: .02,
-  autoAlpha: 0,
-  stagger: {
-    each: .08,
-    onStart() {
-      let target = this.targets()[0];
-      console.log(target.offsetLeft + target.offsetWidth)
-      let cursorPos = target.offsetLeft + target.offsetWidth;
-      gsap.set('.bar', {x: cursorPos + 3})
-    }
-  }
-});
-
-const blink = gsap.timeline({ repeat: -1, repeatDelay: .11 })
-  .to('.bar', { duration: .32, autoAlpha: 0 })
-
-
 let intro = document.querySelector('.intro');
+let mainGame = document.querySelectorAll('.main-game')
 
-document.body.addEventListener("keydown", (e) => {
-  if ((e.key === "Enter" || e.key === "Escape")) {
-    intro.style.display = "none";
-  }
+// -1 = accueil
+// 0 = intro
+// 1 = boucle principale
+// 2 = game over 
+// 3 = win
+// 4 = écran de fin
+
+let gameState = -1;
+
+document.body.addEventListener("keyup", (e) => {
+  if ((e.key === "Enter" || e.key === "Escape" || e.key === "Space" || e.keyCode == 32)) {
+    console.log(gameState)
+    if (gameState == -1) {
+      launchIntro(); 
+      gameState++; 
+      return
+    }
+    if (gameState == 0) {
+      launchGame(); 
+      gameState++; 
+      return
+    }
+    else {
+      return
+    }};
 });
+
+
+function launchIntro() {
+ 
+  intro.style.display = "block";
+
+  const typing_text = gsap.timeline()
+    .from(split.chars, {
+    duration: .02,
+    autoAlpha: 0,
+    stagger: {
+      each: .08,
+    }
+  });
+
+  const blink = gsap.timeline({ repeat: -1, repeatDelay: .11 })
+    .to('.bar', { duration: .32, autoAlpha: 0 })
+
+  }
+
+function launchGame() {
+
+  mainGame.forEach((el)=> {el.style.display = "block"});
+  intro.style.display = "none";
+  init();
+
+}
+
