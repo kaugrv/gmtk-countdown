@@ -180,7 +180,7 @@ function init() {
         let node = document.createElement("div");
         node.className = "countdown";
         node.id = `countdown-${i}`;
-        node.style.color = "blue";
+        node.style.color = "#0099FF";
 
         let time = document.createElement("span");
         time.textContent = 30 + Math.floor(Math.random() * 20);
@@ -263,7 +263,8 @@ gsap.registerPlugin(SplitText)
 const split = new SplitText('#intro-1', { type: 'chars' })
 
 let intro = document.querySelector('.intro');
-let mainGame = document.querySelectorAll('.main-game')
+let mainGame = document.querySelectorAll('.main-game');
+let crtScreen = document.getElementById('crt-screen')
 
 // -1 = accueil
 // 0 = intro
@@ -274,10 +275,8 @@ let mainGame = document.querySelectorAll('.main-game')
 
 let gameState = -1;
 
-document.body.addEventListener("keyup", (e) => {
-  if ((e.key === "Enter" || e.key === "Escape" || e.key === "Space" || e.keyCode == 32)) {
-    console.log(gameState)
-    if (gameState == -1) {
+function gameManager() {
+      if (gameState == -1) {
       launchIntro(); 
       gameState++; 
       return
@@ -289,8 +288,16 @@ document.body.addEventListener("keyup", (e) => {
     }
     else {
       return
-    }};
+    }
+}
+
+document.body.addEventListener("keyup", (e) => {
+  if ((e.key === "Enter" || e.key === "Escape" || e.key === "Space" || e.keyCode == 32)) {
+    gameManager()
+};
 });
+
+document.body.addEventListener("click", gameManager);
 
 
 function launchIntro() {
@@ -315,6 +322,7 @@ function launchGame() {
 
   mainGame.forEach((el)=> {el.style.display = "block"});
   intro.style.display = "none";
+  crtScreen.classList.remove('main-screen-intro')
   init();
 
 }
