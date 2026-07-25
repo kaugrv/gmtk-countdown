@@ -81,10 +81,10 @@ class Counter {
     }
 
     set_pos(target) {
-        this.pos[0] =
-            this.offset_polar[0] + Math.cos(this.offset_polar[1]) + target[0];
-        this.pos[1] =
-            this.offset_polar[1] + Math.sin(this.offset_polar[1]) + target[1];
+        if (this.stopped) return;
+
+        this.pos[0] = target[0];
+        this.pos[1] = target[1];
         this.offset_polar = [0, 0];
         this.offset_speeds = [0, 0];
 
@@ -92,22 +92,33 @@ class Counter {
         this.html_el.style.top = `${this.pos[1]}px`;
     }
 
-    get_pos() {
-        return [
-            this.offset_polar[0] + Math.cos(this.offset_polar[1]),
-            this.offset_polar[1] + Math.sin(this.offset_polar[1]),
-        ];
+    bounce() {
+        this.offset_speeds[0] =
+            -COUNTER_MAX_SPEED[0] * Math.sign(this.offset_speeds[0]);
+        this.offset_speeds[1] =
+            -COUNTER_MAX_SPEED[1] * Math.sign(this.offset_speeds[1]);
+
+        console.log(this.offset_speeds[0]);
+    }
+
+    is_dragged() {
+        return this.drag_offset !== null;
     }
 
     update(dt) {
-        if (this.stopped) return;
+        if (this.stopped || this.is_dragged()) return;
 
         // Update speeds
-        this.offset_speeds[0] += (Math.random() - 0.5) * 10; // r
+        this.offset_speeds[0] += (Math.random() - 0.5) * 5; // r
         this.offset_speeds[1] += (Math.random() - 0.5) * 0.05; // theta
-        // Max rot. speed
-        if (this.offset_speeds[1] > 0.1) {
-            this.offset_speeds[1] = 0.1;
+        // Max  speed
+        if (Math.abs(this.offset_speeds[0]) > COUNTER_MAX_SPEED[0]) {
+            this.offset_speeds[0] =
+                COUNTER_MAX_SPEED[0] * Math.sign(this.offset_speeds[0]);
+        }
+        if (Math.abs(this.offset_speeds[1]) > COUNTER_MAX_SPEED[1]) {
+            this.offset_speeds[1] =
+                COUNTER_MAX_SPEED[1] * Math.sign(this.offset_speeds[1]);
         }
 
         // Update positions
@@ -140,14 +151,23 @@ function init() {
         minimumIntegerDigits: 2,
     });
     setInterval(() => {
+        const total_countdown = countdowns.reduce(
+            (acc, el) => acc + parseInt(el.html_el.textContent),
+            0,
+        );
+
+        if (total_countdown == 0) {
+            alert("GAGNE!");
+            return;
+        }
+
         let txt_el = document.getElementById("global-hour");
         let txt_parts = txt_el.textContent.split(":");
         let secs = parseInt(txt_parts[2]) + 1;
         let mins = parseInt(txt_parts[1]) + Math.floor(secs / 60);
 
         if (mins >= 60) {
-            alert("END");
-            // END
+            alert(`PERDU ${total_countdown}`);
         }
 
         txt_parts[1] = time_format.format(mins % 60);
@@ -156,20 +176,20 @@ function init() {
     }, 1000);
 
     let countdowns_el = document.getElementById("main-countdowns");
-    for (let i = 0; i < 50; ++i) {
+    for (let i = 0; i < 4 * 4; ++i) {
         let node = document.createElement("div");
         node.className = "countdown";
         node.id = `countdown-${i}`;
         node.style.color = "blue";
 
         let time = document.createElement("span");
-        time.textContent = 10;
+        time.textContent = 30 + Math.floor(Math.random() * 20);
         node.appendChild(time);
         countdowns_el.appendChild(node);
 
-        const x = Math.random() * window.innerWidth * 0.9;
-        const y = Math.random() * window.innerHeight * 0.9;
-        countdowns.push(new Counter([x, y], 32 * 2, node));
+        const x = window.innerWidth / 2 - 256 + 128 * (i % 4);
+        const y = window.innerHeight / 2 - 256 + 128 * Math.floor(i / 4);
+        countdowns.push(new Counter([x, y], 128, node));
     }
     requestAnimationFrame(step);
 }
@@ -208,13 +228,25 @@ function step(timestamp) {
             if (isColliding) {
                 const i_val = parseInt(countdowns[i].html_el.textContent);
                 const j_val = parseInt(countdowns[j].html_el.textContent);
-                if (countdowns[i].drag_offset !== null) {
+                if (countdowns[i].is_dragged()) {
                     countdowns[i].html_el.textContent = i_val - j_val;
-                } else if (countdowns[j].drag_offset !== null) {
+                    if (countdowns[i].html_el.textContent < 0) {
+                        countdowns[i].html_el.textContent =
+                            50 - countdowns[i].html_el.textContent;
+                    }
+                    countdowns[j].bounce();
+                } else if (countdowns[j].is_dragged()) {
                     countdowns[j].html_el.textContent = j_val - i_val;
+                    if (countdowns[j].html_el.textContent < 0) {
+                        countdowns[j].html_el.textContent =
+                            50 - countdowns[j].html_el.textContent;
+                    }
+                    countdowns[i].bounce();
                 } else {
                     countdowns[i].html_el.textContent = i_val + j_val;
                     countdowns[j].html_el.textContent = i_val + j_val;
+                    countdowns[i].bounce();
+                    countdowns[j].bounce();
                 }
 
                 countdowns[i].collision_cooldown = 5;
@@ -224,11 +256,6 @@ function step(timestamp) {
     }
     requestAnimationFrame(step);
 }
-
-init();
-
-
-
 
 // SplitText (Intro)
 
