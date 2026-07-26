@@ -139,3 +139,46 @@ body {
     opacity: 0.5;
     transform: scale(3);
 }
+
+.gameover-screen {
+    display: none;
+    position: absolute;
+    animation: flickering-glitch 0.01s infinite;
+    mix-blend-mode: color-dodge;
+}
+
+.gameover-screen-2 {
+    animation: flickering-glitch-up 1s linear infinite;
+    position: absolute;
+        mix-blend-mode: color-dodge;
+
+
+}
+
+
+@keyframes flickering-glitch {
+    0% { opacity: 0.7;transform: translateX(-3px);}
+    50% { opacity: 0; transform: translateX(30px);}
+    100% { opacity: 0.7;transform: translateX(-3px) }
+}
+
+@keyframes flickering-glitch-up {
+    0% { opacity: 1;transform: translateY(-3px);}
+    50% { opacity: 0; transform: translateY(30px);}
+    100% { opacity: 1;transform: translateY(-3px) }
+}
+
+.glitch {
+   animation: text-glitch 0.1s reverse both infinite;
+   z-index: -2;
+}
+
+
+@keyframes text-glitch {
+   0% { transform: translate(0); }
+   20% { transform: translate(-2px, 2px); }
+   40% { transform: translate(-2px, -2px); }
+   60% { transform: translate(2px, 2px); }
+   80% { transform: translate(2px, -2px); }
+   to { transform: translate(0); }
+}

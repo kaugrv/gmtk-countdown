@@ -186,8 +186,10 @@ function init() {
         );
 
         if (total_countdown == 0) {
-            alert("GAGNE!");
             clearInterval(global_timer);
+            // alert("GAGNE!");
+            gameState = 3;
+            winGame();
             return;
         }
 
@@ -198,7 +200,9 @@ function init() {
 
         if (mins >= 60) {
             clearInterval(global_timer);
-            alert(`PERDU ${total_countdown}`);
+            // alert(`PERDU ${total_countdown}`);
+            if (gameState == 1) looseGame();
+            return;
         }
 
         txt_parts[1] = time_format.format(mins % 60);
@@ -306,6 +310,7 @@ let dateEl = document.querySelector(".date");
 let hourEl = document.getElementById("global-timer");
 
 let videoPlayer = document.querySelector(".video-player");
+let gameOverScreen = document.querySelector(".gameover-screen");
 
 // -1 = accueil
 // 0 = intro
@@ -319,18 +324,18 @@ let gameState = -1;
 function gameManager() {
     if (gameState == -1) {
         launchIntro();
-        gameState++;
+        gameState = 0;
         return;
     }
     if (gameState == 0) {
         launchGame();
-        gameState++;
+        gameState = 1;
         return;
-    }
-    if (gameState == 1) {
-        winGame();
-        gameState = 3;
-        return;
+    // }
+    // if (gameState == 1) {
+    //     winGame();
+    //     gameState = 3;
+    //     return;
     } else {
         return;
     }
@@ -366,6 +371,7 @@ function launchIntro() {
 }
 
 function launchGame() {
+    gameState = 1;
     mainGame.forEach((el) => {
         el.style.display = "block";
     });
@@ -379,6 +385,7 @@ function launchGame() {
 }
 
 function winGame() {
+
     dateEl.innerHTML = "1/1/2000";
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };
@@ -421,4 +428,19 @@ function winGame() {
             scale: 1,
         });
     });
+}
+
+function looseGame() {
+    gameState = 2;
+    dateEl.innerHTML = "1/1/2000";
+    hourEl.innerHTML = "OO:OO:OO";
+    hourEl.classList.add("glitch");
+    gameOverScreen.style.display = "flex";
+    let countdowns_el = document.querySelectorAll(".countdown");
+    countdowns_el.forEach((el) => {
+        el.style.color = "black";
+    });
+    document.getElementById("audio-glitch").volume = 0.3;
+    document.getElementById("audio-glitch").play()
+    sleep(2500).then(()=>{window.location.reload()})
 }
