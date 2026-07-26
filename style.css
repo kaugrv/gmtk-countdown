@@ -94,7 +94,7 @@ body {
 .main-screen {
     width: 70vw;
     height: 80vh;
-    background-image: url("/assets/screen-background.jpg");
+    background-image: url("assets/screen-background.jpg");
     background-position: center;
     position: relative;
 
