@@ -172,6 +172,10 @@ function get_game_area() {
 
 let countdowns = [];
 function init() {
+    const music = document.getElementById("ingame-music");
+    music.volume = 0.7;
+    music.play();
+
     var time_format = new Intl.NumberFormat("en-US", {
         minimumIntegerDigits: 2,
     });
