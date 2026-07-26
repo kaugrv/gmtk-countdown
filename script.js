@@ -276,8 +276,7 @@ function step(timestamp) {
                 if (countdowns[i].is_dragged()) {
                     countdowns[i].html_el.textContent = i_val - j_val;
                     if (countdowns[i].html_el.textContent < 0) {
-                        countdowns[i].html_el.textContent =
-                            60 - countdowns[i].html_el.textContent;
+                        countdowns[i].html_el.textContent = i_val + j_val;
 
                         countdowns[i].html_el.classList.add(
                             "countdown-hit-incorrect",
@@ -297,8 +296,7 @@ function step(timestamp) {
                 } else if (countdowns[j].is_dragged()) {
                     countdowns[j].html_el.textContent = j_val - i_val;
                     if (countdowns[j].html_el.textContent < 0) {
-                        countdowns[j].html_el.textContent =
-                            60 - countdowns[j].html_el.textContent;
+                        countdowns[j].html_el.textContent = i_val + j_val;
                         countdowns[i].html_el.classList.add(
                             "countdown-hit-incorrect",
                         );
