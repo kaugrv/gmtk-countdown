@@ -289,7 +289,7 @@ function step(timestamp) {
 
 // Pour gérer timeout facilement - https://www.sitepoint.com/delay-sleep-pause-wait/
 function sleep(ms) {
-  return new Promise((fonction) => setTimeout(fonction, ms));
+    return new Promise((fonction) => setTimeout(fonction, ms));
 }
 
 gsap.registerPlugin(SplitText);
@@ -312,7 +312,7 @@ let videoPlayer = document.querySelector(".video-player");
 // 3 = win
 // 4 = écran de fin
 
-let gameState = -1 ;
+let gameState = -1;
 
 function gameManager() {
     if (gameState == -1) {
@@ -325,7 +325,7 @@ function gameManager() {
         gameState++;
         return;
     }
-    if(gameState == 1) {
+    if (gameState == 1) {
         winGame();
         gameState = 3;
         return;
@@ -376,48 +376,46 @@ function launchGame() {
         .to(".bar", { duration: 0.32, autoAlpha: 0 });
 }
 
-
 function winGame() {
+    dateEl.innerHTML = "1/1/2000";
 
-    dateEl.innerHTML = "1/1/2000"
-    
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-    
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+
     hourEl.style.display = "none";
     let countdowns_el = document.querySelectorAll(".countdown");
     countdowns_el.forEach((el) => {
         el.style.display = "none";
     });
 
-    let newYear = new Date(2000, 1, 1);
+    let currentDate = new Date(2000, 1, 1);
+    const initDate = Number(currentDate);
+    let targetDate = new Date();
 
     sleep(2000).then(() => {
+        videoPlayer.style.display = "block";
+        const videoEl = document.getElementById("video-el");
+        videoEl.play();
 
-    videoPlayer.style.display = "block";
-    document.getElementById("video-el").play();
+        let incrementInterval = setInterval(() => {
+            const videoCompletion = videoEl.currentTime / video_el.duration;
+            currentDate.setMilliseconds(
+                (targetDate - initDate) * videoCompletion + initDate,
+            );
+            const texteDate = currentDate.toLocaleDateString("en-EN", options);
+            dateEl.innerText = texteDate;
 
-    let incrementInterval = setInterval(() => {
-        newYear.setDate(newYear.getDate() + 150);
-        const texteDate = newYear.toLocaleDateString('en-EN', options);
-        dateEl.innerText = texteDate;
+            if (videoCompletion >= 0.99) {
+                clearInterval(incrementInterval);
+                dateEl.innerHTML = targetDate.toLocaleDateString(
+                    "en-EN",
+                    options,
+                );
+            }
         }, 250);
-    
-    setTimeout(() => {
-        clearInterval(incrementInterval);
-        dateEl.innerHTML = new Date().toLocaleDateString('en-EN', options);
-    }, 17000);
 
-
-    gsap.from(".video-player", {
-    duration: 21,
-    scale: 1          
+        gsap.from(".video-player", {
+            duration: 21,
+            scale: 1,
+        });
     });
-
-
-    })
-
-
-
 }
-
-
