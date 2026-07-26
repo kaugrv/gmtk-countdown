@@ -20,10 +20,19 @@ class Counter {
                 this.html_el.textContent - 1,
                 0,
             );
+            if (this.collision_cooldown >= 1) {
+                this.collision_cooldown -= 1;
+                this.html_el.classList.add("countdown-cooldown");
+            } else {
+                this.collision_cooldown = 0;
+                this.html_el.classList.remove("countdown-cooldown");
+                this.html_el.classList.remove("countdown-hit-correct");
+                this.html_el.classList.remove("countdown-hit-incorrect");
+            }
             this.collision_cooldown = Math.max(this.collision_cooldown - 1, 0);
 
             if (this.html_el.textContent == 0) {
-                this.html_el.style.color = "red";
+                this.html_el.classList.add("countdown-finished");
                 this.stopped = true;
             }
         }, 1000);
@@ -216,7 +225,7 @@ function init() {
         let node = document.createElement("div");
         node.className = "countdown";
         node.id = `countdown-${i}`;
-        node.style.color = "#0099FF";
+        // node.style.color = "#0099FF";
 
         let time = document.createElement("span");
         time.textContent = 30 + Math.floor(Math.random() * 20);
@@ -268,14 +277,41 @@ function step(timestamp) {
                     countdowns[i].html_el.textContent = i_val - j_val;
                     if (countdowns[i].html_el.textContent < 0) {
                         countdowns[i].html_el.textContent =
-                            50 - countdowns[i].html_el.textContent;
+                            60 - countdowns[i].html_el.textContent;
+
+                        countdowns[i].html_el.classList.add(
+                            "countdown-hit-incorrect",
+                        );
+                        countdowns[j].html_el.classList.add(
+                            "countdown-hit-incorrect",
+                        );
+                    } else {
+                        countdowns[i].html_el.classList.add(
+                            "countdown-hit-correct",
+                        );
+                        countdowns[j].html_el.classList.add(
+                            "countdown-hit-correct",
+                        );
                     }
                     countdowns[j].bounce();
                 } else if (countdowns[j].is_dragged()) {
                     countdowns[j].html_el.textContent = j_val - i_val;
                     if (countdowns[j].html_el.textContent < 0) {
                         countdowns[j].html_el.textContent =
-                            50 - countdowns[j].html_el.textContent;
+                            60 - countdowns[j].html_el.textContent;
+                        countdowns[i].html_el.classList.add(
+                            "countdown-hit-incorrect",
+                        );
+                        countdowns[j].html_el.classList.add(
+                            "countdown-hit-incorrect",
+                        );
+                    } else {
+                        countdowns[i].html_el.classList.add(
+                            "countdown-hit-correct",
+                        );
+                        countdowns[j].html_el.classList.add(
+                            "countdown-hit-correct",
+                        );
                     }
                     countdowns[i].bounce();
                 } else {
@@ -283,6 +319,12 @@ function step(timestamp) {
                     countdowns[j].html_el.textContent = i_val + j_val;
                     countdowns[i].bounce();
                     countdowns[j].bounce();
+                    countdowns[i].html_el.classList.add(
+                        "countdown-hit-incorrect",
+                    );
+                    countdowns[j].html_el.classList.add(
+                        "countdown-hit-incorrect",
+                    );
                 }
 
                 countdowns[i].collision_cooldown = 5;
@@ -352,7 +394,7 @@ document.body.addEventListener("keyup", (e) => {
     }
 });
 
-document.body.addEventListener("click", gameManager);
+// document.body.addEventListener("click", gameManager);
 
 function launchIntro() {
     intro.style.display = "block";
