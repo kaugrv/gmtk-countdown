@@ -373,11 +373,11 @@ function gameManager() {
         launchGame();
         gameState = 1;
         return;
-    // }
-    // if (gameState == 1) {
-    //     winGame();
-    //     gameState = 3;
-    //     return;
+        // }
+        // if (gameState == 1) {
+        //     winGame();
+        //     gameState = 3;
+        //     return;
     } else {
         return;
     }
@@ -394,7 +394,7 @@ document.body.addEventListener("keyup", (e) => {
     }
 });
 
-// document.body.addEventListener("click", gameManager);
+document.body.addEventListener("click", gameManager);
 
 function launchIntro() {
     intro.style.display = "block";
@@ -427,8 +427,17 @@ function launchGame() {
 }
 
 function winGame() {
-
     dateEl.innerHTML = "1/1/2000";
+    const music_ingame = document.getElementById("ingame-music");
+    const music_win = document.getElementById("win-music");
+    music_win.volume = 0;
+    music_win.play();
+    const music_crossfade_interval = setInterval(() => {
+        music_ingame.volume -= 0.7 / (2000 / 10);
+        music_win.volume += 1.0 / (2000 / 10);
+
+        if (music_win.volume >= 1.0) clearInterval(music_crossfade_interval);
+    }, 10);
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };
 
@@ -462,6 +471,13 @@ function winGame() {
                     "en-EN",
                     options,
                 );
+
+                const music_crossfade_interval = setInterval(() => {
+                    music_ingame.volume += 1 / (2000 / 10);
+
+                    if (music_ingame.volume >= 1.0)
+                        clearInterval(music_crossfade_interval);
+                }, 10);
             }
         }, 250);
 
@@ -483,6 +499,8 @@ function looseGame() {
         el.style.color = "black";
     });
     document.getElementById("audio-glitch").volume = 0.3;
-    document.getElementById("audio-glitch").play()
-    sleep(2500).then(()=>{window.location.reload()})
+    document.getElementById("audio-glitch").play();
+    sleep(2500).then(() => {
+        window.location.reload();
+    });
 }
