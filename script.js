@@ -158,7 +158,7 @@ function get_game_area() {
         .getElementsByClassName("date")[0]
         .getBoundingClientRect();
     const time_rect = document
-        .getElementById("global-hour")
+        .getElementById("global-timer")
         .getBoundingClientRect();
     return {
         left: screen_rect.left,
@@ -179,7 +179,7 @@ function init() {
     var time_format = new Intl.NumberFormat("en-US", {
         minimumIntegerDigits: 2,
     });
-    setInterval(() => {
+    const global_timer = setInterval(() => {
         const total_countdown = countdowns.reduce(
             (acc, el) => acc + parseInt(el.html_el.textContent),
             0,
@@ -187,15 +187,17 @@ function init() {
 
         if (total_countdown == 0) {
             alert("GAGNE!");
+            clearInterval(global_timer);
             return;
         }
 
-        let txt_el = document.getElementById("global-hour");
+        let txt_el = document.getElementById("global-timer");
         let txt_parts = txt_el.textContent.split(":");
         let secs = parseInt(txt_parts[2]) + 1;
         let mins = parseInt(txt_parts[1]) + Math.floor(secs / 60);
 
         if (mins >= 60) {
+            clearInterval(global_timer);
             alert(`PERDU ${total_countdown}`);
         }
 
@@ -301,7 +303,7 @@ let mainGame = document.querySelectorAll(".main-game");
 let crtScreen = document.getElementById("crt-screen");
 
 let dateEl = document.querySelector(".date");
-let hourEl = document.getElementById("global-hour");
+let hourEl = document.getElementById("global-timer");
 
 let videoPlayer = document.querySelector(".video-player");
 
@@ -388,7 +390,7 @@ function winGame() {
     });
 
     let currentDate = new Date(2000, 1, 1);
-    const initDate = Number(currentDate);
+    const initDate = currentDate.getTime();
     let targetDate = new Date();
 
     sleep(2000).then(() => {
@@ -397,9 +399,10 @@ function winGame() {
         videoEl.play();
 
         let incrementInterval = setInterval(() => {
-            const videoCompletion = videoEl.currentTime / video_el.duration;
-            currentDate.setMilliseconds(
-                (targetDate - initDate) * videoCompletion + initDate,
+            const videoCompletion = videoEl.currentTime / videoEl.duration;
+
+            currentDate.setTime(
+                (targetDate.getTime() - initDate) * videoCompletion + initDate,
             );
             const texteDate = currentDate.toLocaleDateString("en-EN", options);
             dateEl.innerText = texteDate;

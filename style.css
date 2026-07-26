@@ -9,13 +9,12 @@
 }
 
 :root {
-    --text-color: #0099FF;
+    --text-color: #0099ff;
     --text-medium: 30px;
     --text-large: 50px;
     --text-larger: 70px;
 
     --text-countdowns: 20pt;
-
 }
 
 .countdown {
@@ -25,14 +24,11 @@
 
     cursor: pointer;
     font-size: var(--text-countdowns);
-    font-family: 'Alien';
+    font-family: "Alien";
 
     color: var(--text-color);
-    text-shadow: var(--text-color) 0px 0px 39px; 
-
-
+    text-shadow: var(--text-color) 0px 0px 39px;
 }
-
 
 body {
     background-color: black;
@@ -46,65 +42,77 @@ body {
 
     user-select: none;
     -webkit-user-select: none;
-
 }
 
 .date {
     margin-top: 10px;
 
     color: var(--text-color);
-    font-family: 'Alien';
+    font-family: "Alien";
     font-size: var(--text-large);
-    text-shadow: var(--text-color) 0px 0px 39px; 
-
+    text-shadow: var(--text-color) 0px 0px 39px;
 }
 
-.global-hour {
+.global-timer {
     position: absolute;
     bottom: 0;
     right: 10px;
 
     color: var(--text-color);
-    font-family: 'Alien';
+    font-family: "Alien";
     font-size: var(--text-larger);
-    text-shadow: var(--text-color) 0px 0px 39px; 
+    text-shadow: var(--text-color) 0px 0px 39px;
 }
 
 .main-screen {
     width: 70vw;
     height: 80vh;
-    background-image: url('/assets/screen-background.jpg');
+    background-image: url("/assets/screen-background.jpg");
     background-position: center;
     position: relative;
-        
+
     animation: flickering 0.1s linear infinite;
-
 }
-
 
 .scanline {
     width: 100%;
     height: 100px;
     z-index: 8;
-    background: linear-gradient( 0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 10%, rgba(0, 0, 0, 0.1) 100% );
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 255, 255, 0.2) 10%,
+        rgba(0, 0, 0, 0.1) 100%
+    );
     opacity: 0.1;
     position: absolute;
     bottom: 100%;
     animation: scanline 3s linear infinite;
     pointer-events: none;
-
 }
 
 @keyframes scanline {
-    0% {bottom: 100%;}  
-    80% {bottom: 100%;}
-    100% {bottom: 0%;}
+    0% {
+        bottom: 100%;
+    }
+    80% {
+        bottom: 100%;
+    }
+    100% {
+        bottom: 0%;
+    }
 }
 
 @keyframes flickering {
-    0% {filter: brightness(1);}  
-    50% {filter: brightness(1.1);}
-    100% {filter: brightness(1);}
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.1);
+    }
+    100% {
+        filter: brightness(1);
+    }
 }
 
 .main-game {
@@ -119,16 +127,15 @@ body {
 .intro {
     display: none;
     color: var(--text-color);
-    font-family: 'Alien';
+    font-family: "Alien";
     font-size: var(--text-medium);
-    text-shadow: var(--text-color) 0px 0px 39px; 
+    text-shadow: var(--text-color) 0px 0px 39px;
 }
 
 .video-player {
     display: none;
     position: absolute;
-    mix-blend-mode:lighten;
+    mix-blend-mode: lighten;
     opacity: 0.5;
-    transform: scale(3);}
-
-
+    transform: scale(3);
+}

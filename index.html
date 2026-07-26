@@ -24,7 +24,9 @@
                 ><br />
             </div>
 
-            <span class="global-hour main-game" id="global-hour">23:55:50</span>
+            <span class="global-timer main-game" id="global-timer"
+                >23:55:50</span
+            >
         </div>
         <div id="main-countdowns" class="main-game"></div>
         <audio
@@ -34,7 +36,9 @@
             preload
         ></audio>
 
-        <div class="video-player"><video src="assets/video.mp4" autoplay id="video-el"></video></div>
+        <div class="video-player">
+            <video src="assets/video.mp4" id="video-el" preload></video>
+        </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         <script src="assets/SplitText.min.js"></script>
