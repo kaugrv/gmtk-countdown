@@ -221,19 +221,19 @@ function init() {
 
     let countdowns_el = document.getElementById("main-countdowns");
     const area = get_game_area();
-    for (let i = 0; i < 4 * 4; ++i) {
+    for (let i = 0; i < 5 * 5; ++i) {
         let node = document.createElement("div");
         node.className = "countdown";
         node.id = `countdown-${i}`;
         // node.style.color = "#0099FF";
 
         let time = document.createElement("span");
-        time.textContent = 30 + Math.floor(Math.random() * 20);
+        time.textContent = 60 + Math.floor(Math.random() * 30);
         node.appendChild(time);
         countdowns_el.appendChild(node);
 
-        const x = area.left + (area.width / 4) * (i % 4);
-        const y = area.top + 25 + (area.height / 4) * Math.floor(i / 4);
+        const x = area.left + (area.width / 5) * (i % 5);
+        const y = area.top + 25 + (area.height / 5) * Math.floor(i / 5);
         countdowns.push(new Counter([x, y], 128, node));
     }
     requestAnimationFrame(step);
