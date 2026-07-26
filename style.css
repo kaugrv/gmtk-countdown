@@ -113,7 +113,7 @@ body {
 
 .main-screen-intro {
     background-image: none;
-        cursor: pointer;
+    cursor: pointer;
 }
 
 .intro {
@@ -123,4 +123,12 @@ body {
     font-size: var(--text-medium);
     text-shadow: var(--text-color) 0px 0px 39px; 
 }
+
+.video-player {
+    display: none;
+    position: absolute;
+    mix-blend-mode:lighten;
+    opacity: 0.5;
+    transform: scale(3);}
+
 
